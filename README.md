@@ -1,6 +1,6 @@
 # 一个市值 13 亿的 React 项目管理
 
-## ① 初始化脚手架和 antd
+## ① 初始化脚手架和 antd day_1
 
 1. 进入 https://ant.design/docs/react/introduce-cn andt 网址 进入在 create-react-app 中使用（高级配置）
 
@@ -21,3 +21,13 @@
 ## ③ login 基本静态页面
 
 1. 实现 login 用户声明式验证和自定义密码的验证
+
+## ① axios 发送请求和代理解决跨域问题 day_2
+
+1. 下载 yarn add axios 包并引入 用来发送请求
+
+2. 在 json 中加上 "proxy": "http://localhost:4000"(在3000开启一个代理服务器，拦截所有3000的请求，随后转发给4000)
+
+3. 使用 axios 请求拦截和响应拦截器解决 接收到对象问题
+
+4. 给 login 附带假进度条 yarn add nprogress 网址：https://github.com/rstacruz/nprogress
