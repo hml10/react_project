@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Form, Input, Button, message } from "antd";
+import { Redirect } from "react-router-dom";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { createSaveUserAction } from "../../redux/actions/login";
@@ -21,7 +22,7 @@ class Login extends Component {
       message.success("登录成功!"); // 如果登录成功(用户名密码是对的)
       // 通知redux保存用户信息
       this.props.saveUserInfo(data);
-      this.props.history.replace("/admin"); // 登录成功跳转到admin
+      // this.props.history.replace("/admin"); // 登录成功跳转到admin
     } else {
       message.error(msg);
     }
@@ -37,7 +38,12 @@ class Login extends Component {
     if (errmsg.length > 0) return Promise.reject(errmsg);
     else return Promise.resolve();
   };
+
   render() {
+    if (this.props.isLogin) {
+      return <Redirect to="/admin" />;
+    }
+
     return (
       <div className="login">
         {/* login 上部分 */}
@@ -94,6 +100,6 @@ class Login extends Component {
 }
 
 export default connect(
-  () => ({}), //传递状态
+  state => ({ isLogin: state.userInfo.isLogin }), //传递状态
   { saveUserInfo: createSaveUserAction } //传递操作状态的方法
 )(Login);

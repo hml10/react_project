@@ -37,3 +37,9 @@
 1. 完成登录跳转至 admin 管理页面
 
 2. 编写最不喜欢的 redux 环境 下载 yarn add redux react-redux redux-thunk redux-devtools-extension
+
+3. localStorage 保存用户的信息读取出来交给 redux
+
+4. 给 login 和 admin 加权限的校验 (登录了进入 admin 没有登陆 就重定向到 login 页面) (阻止网页直接输入跳转等。。。)
+
+5. 简单退出登录功能
