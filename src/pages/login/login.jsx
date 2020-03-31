@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { reqLogin } from "../../ajax/index";
 
@@ -14,6 +14,13 @@ export default class Login extends Component {
     // console.log("接收到的表单数据: ", values);
     const result = await reqLogin(values); // ajax.post("/login", values);
     console.log("@@", result);
+    const { status, data, msg } = result;
+    if (status === 0) {
+      message.success("登录成功!"); // 如果登录成功(用户名密码是对的)
+      this.props.history.replace("/admin"); // 登录成功跳转到admin
+    } else {
+      message.error(msg);
+    }
   };
   // 密码的回调函数
   pwdValidator = (_, value) => {
@@ -58,15 +65,7 @@ export default class Login extends Component {
               />
             </Item>
 
-            <Item
-              name="password"
-              rules={[
-                // {validator:(_,value)=>
-                //   value? Promise.resolve():Promise.reject('请输入密码')
-                // }
-                { validator: this.pwdValidator }
-              ]}
-            >
+            <Item name="password" rules={[{ validator: this.pwdValidator }]}>
               <Input
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
