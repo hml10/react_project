@@ -1,7 +1,13 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
-export default class Admin extends Component {
+class Admin extends Component {
   render() {
-    return <div>欢迎xxx登录</div>;
+    return <div>欢迎{this.props.username}登录</div>;
   }
 }
+
+export default connect(
+  state => ({ username: state.userInfo.user.username }), //占位
+  {}
+)(Admin);
