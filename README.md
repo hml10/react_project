@@ -42,4 +42,10 @@
 
 4. 给 login 和 admin 加权限的校验 (登录了进入 admin 没有登陆 就重定向到 login 页面) (阻止网页直接输入跳转等。。。)
 
-5. 简单退出登录功能
+5. 简单退出登录功能(用来看效果 之后会删掉)
+
+6. 使用 antd 组件实现首页头部静态布局的基本样式
+
+7. js 控制网页全屏第三方库 https://github.com/sindresorhus/screenfull.js
+
+8. 组件展示用户名 + 组件退出登录 模态框 Modal
