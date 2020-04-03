@@ -76,9 +76,13 @@ class Header extends Component {
         <div className="header-top">
           <Button onClick={this.fullScreen} size="small">
             {/* 切换全屏状态 */}
-            {this.isFull ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+            {this.state.isFull ? (
+              <FullscreenExitOutlined />
+            ) : (
+              <FullscreenOutlined />
+            )}
           </Button>
-          <span className="user-show">欢迎{this.props.username}</span>
+          <span className="user-show">欢迎 {this.props.username}</span>
           <Button className="button" onClick={this.logout} type="link">
             退出登录
           </Button>
