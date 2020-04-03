@@ -32,7 +32,7 @@
 
 4. 给 login 附带假进度条 yarn add nprogress 网址：https://github.com/rstacruz/nprogress
 
-## 三、 继续完善登录页面+redux day_3
+## 三、 完成登录页面 + redux day_3
 
 1. 完成登录跳转至 admin 管理页面
 
@@ -44,8 +44,16 @@
 
 5. 简单退出登录功能(用来看效果 之后会删掉)
 
-6. 使用 antd 组件实现首页头部静态布局的基本样式
+6. 使用 antd 中 Layout 组件实现首页左侧、头部静态布局的基本样式
 
-7. js 控制网页全屏第三方库 https://github.com/sindresorhus/screenfull.js
+7. js 控制网页全屏切换 第三方库 https://github.com/sindresorhus/screenfull.js
 
-8. 组件展示用户名 + 组件退出登录 模态框 Modal
+8. 组件展示用户名 + 组件退出登录 退出时弹出确认、取消 模态框 Modal
+
+## 四、 实时天气 + 左侧菜单导航 day_4
+
+1. 实现首页头部 实时、年月日 https://github.com/iamkun/dayjs 实时、天气 jsonp 请求 https://github.com/webmodules/jsonp
+
+2. 左侧菜单区域使用 antd 导航菜单 Menu 组件实现静态页面布局
+
+3. 创建 menu 配置菜单项 将其遍历显示

@@ -7,7 +7,7 @@ import { createSaveUserAction } from "../../redux/actions/login";
 import { reqLogin } from "../../ajax/index";
 
 import "./css/login.less";
-import logo from "./imgs/logo.png";
+import logo from "../../static/img/logo.png";
 
 const { Item } = Form;
 
@@ -28,7 +28,7 @@ class Login extends Component {
     }
   };
   // 密码的回调函数
-  pwdValidator = (_, value) => {
+  pwdValidator = (_, value = "") => {
     // console.log(value)
     const errmsg = [];
     if (!value.trim()) errmsg.push("密码必须输入");
@@ -48,7 +48,7 @@ class Login extends Component {
       <div className="login">
         {/* login 上部分 */}
         <div className="login-header">
-          <img src={logo} alt="logo" />
+          <img src={logo} alt="登录_logo" />
           <h1>商品管理系统</h1>
         </div>
         {/* login 下部分 */}

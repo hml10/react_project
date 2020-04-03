@@ -2,10 +2,11 @@ import axios from "axios";
 import qs from "querystring";
 import NProgress from "nprogress"; // 引入进度条
 import { message } from "antd";
+import { AJAX_BASE_URL, AJAX_TIMEOUT } from "../config/index";
 import "nprogress/nprogress.css";
 
-axios.defaults.timeout = 2000; // 超时时间
-axios.defaults.baseURL = "http://localhost:3000"; // 请求的基本路径
+axios.defaults.timeout = AJAX_TIMEOUT; // 超时时间
+axios.defaults.baseURL = AJAX_BASE_URL; // 请求的基本路径
 
 //使用axios请求拦截器
 axios.interceptors.request.use(config => {
