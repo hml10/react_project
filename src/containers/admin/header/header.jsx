@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import {
   FullscreenOutlined,
   FullscreenExitOutlined,
-  ExclamationCircleOutlined
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import screenfull from "screenfull";
 import dayjs from "dayjs";
@@ -22,8 +22,8 @@ class Header extends Component {
     weatherData: {
       picture: "", // 天气图片地址
       weather: "", // 天气文字信息
-      temperature: "" // 温度
-    }
+      temperature: "", // 温度
+    },
   };
 
   fullScreen = () => {
@@ -41,7 +41,7 @@ class Header extends Component {
         // 确认按钮的回调
         // console.log(this); // undefined
         this.props.deleteUser();
-      }
+      },
     });
   };
 
@@ -106,8 +106,8 @@ class Header extends Component {
 }
 
 export default connect(
-  state => ({ username: state.userInfo.user.username }), // 传递状态
+  (state) => ({ username: state.userInfo.user.username }), // 传递状态
   {
-    deleteUser: createDeleteUserAction
+    deleteUser: createDeleteUserAction,
   } // 传递操作状态的方法
 )(Header);

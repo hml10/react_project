@@ -13,7 +13,7 @@ const { Item } = Form;
 
 class Login extends Component {
   // 表单提交的回调
-  onFinish = async values => {
+  onFinish = async (values) => {
     // console.log("接收到的表单数据: ", values);
     const result = await reqLogin(values); // ajax.post("/login", values);
     // console.log("@@", result);
@@ -41,7 +41,7 @@ class Login extends Component {
 
   render() {
     if (this.props.isLogin) {
-      return <Redirect to="/admin" />;
+      return <Redirect to="/admin/home" />; //暴力跳转至默认home
     }
 
     return (
@@ -64,8 +64,8 @@ class Login extends Component {
                 { max: 12, message: "账号必须小于等于12位" },
                 {
                   pattern: /^\w+$/,
-                  message: "账号必须是英文、数字或下划线组成"
-                }
+                  message: "账号必须是英文、数字或下划线组成",
+                },
               ]}
             >
               <Input
@@ -100,6 +100,6 @@ class Login extends Component {
 }
 
 export default connect(
-  state => ({ isLogin: state.userInfo.isLogin }), //传递状态
+  (state) => ({ isLogin: state.userInfo.isLogin }), //传递状态
   { saveUserInfo: createSaveUserAction } //传递操作状态的方法
 )(Login);
