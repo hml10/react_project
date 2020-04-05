@@ -10,6 +10,7 @@ import screenfull from "screenfull";
 import dayjs from "dayjs";
 import { reqWeatherData } from "../../../ajax/index";
 import { createDeleteUserAction } from "../../../redux/actions/login";
+import { createSaveTitleAction } from "../../../redux/actions/title";
 import "./css/header.less";
 
 const { confirm } = Modal;
@@ -41,10 +42,12 @@ class Header extends Component {
         // 确认按钮的回调
         // console.log(this); // undefined
         this.props.deleteUser();
+        this.props.deleteTitle("");
       },
     });
   };
 
+  // 请求天气信息
   getWeatherData = async () => {
     let result = await reqWeatherData();
     const { dayPictureUrl, weather, temperature } = result;
@@ -90,7 +93,7 @@ class Header extends Component {
 
         <div className="header-bottom">
           <div className="bottom-left">
-            <span>首页</span>
+            <span>{this.props.title}</span>
           </div>
           <div className="bottom-right">
             <span>{time}</span>
@@ -106,8 +109,12 @@ class Header extends Component {
 }
 
 export default connect(
-  (state) => ({ username: state.userInfo.user.username }), // 传递状态
+  (state) => ({
+    username: state.userInfo.user.username,
+    title: state.title,
+  }), // 传递状态
   {
     deleteUser: createDeleteUserAction,
+    deleteTitle: createSaveTitleAction,
   } // 传递操作状态的方法
 )(Header);

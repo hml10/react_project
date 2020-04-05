@@ -65,3 +65,11 @@
 6. withRouter 获取非路由组件 api 完善刷新后还是默认选中菜单和选中展开的菜单
 
 7. 暴力解决登录后也能默认选中的 bug (antd 了解 defaultSelectedKeys 和 selectedKeys 的区别)
+
+## 五、更新头部文字 + 实现请求数据后的商品分类管理 day_5
+
+1. 点击左侧导航更新头部的文字 (使用 redux 存入点击收到的数据 再读取出来显示)
+
+2. 实现商品分类管理 antd Card 卡片组件(<Button type="link">按钮</Button>模拟 a 标签做跳转)
+
+3. 引入 antd table 表格组件 通过遍历 拿到后台实时数据展现在表格内

@@ -7,16 +7,16 @@ import { message } from "antd";
 import {
   WEATHER_AK,
   WEATHER_LOCATION,
-  WEATHER_BASE_URL
+  WEATHER_BASE_URL,
 } from "../config/index";
 
 //请求登录
-export const reqLogin = loginObj => ajax.post("/login", loginObj);
+export const reqLogin = (loginObj) => ajax.post("/login", loginObj);
 
 // jsonp 请求天气信息
 export const reqWeatherData = () => {
   const url = `${WEATHER_BASE_URL}?location=${WEATHER_LOCATION}&output=json&ak=${WEATHER_AK}`;
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     jsonp(url, { timeout: 3000 }, (err, data) => {
       //超时时间 timeout
       if (!err) {
@@ -32,3 +32,6 @@ export const reqWeatherData = () => {
     });
   });
 };
+
+// 请求分类列表
+export const reqCategoryList = () => ajax.get("/manage/category/list");
