@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Card, Button, Table, Modal, Form, Input, message } from "antd";
 import { connect } from "react-redux";
-import { reqAddCategory } from "../../../../ajax/index";
+import { reqAddCategory, reqUpdateCategory } from "../../../../ajax/index";
 import {
   createSaveCategoryAsyncAction,
   createSaveCategoryAction,
@@ -15,7 +15,26 @@ class Category extends Component {
   };
 
   // 调用showModal展示弹窗
-  showModal = () => {
+  showModal = (currentCategory) => {
+    //如果新增弹窗，currentCategory就是默认的event
+    //如果修改弹窗，currentCategory就是当前要编辑的那个分类对象
+    const { _id, name } = currentCategory;
+    if ((_id, name)) {
+      this._id = _id;
+      this.name = name;
+      this.isUpdate = true;
+      // console.log("是修改", _id, name);
+    } else {
+      // console.log("是新增");
+      this._id = "";
+      this.name = "";
+      this.isUpdate = false;
+    }
+    //重置表单
+    if (this.refs.categoryForm) {
+      this.refs.categoryForm.resetFields();
+    }
+
     //弹窗展示
     this.setState({ visible: true });
   };
@@ -27,13 +46,19 @@ class Category extends Component {
     if (!categoryName) {
       message.error("输入不能为空！", 0.5);
     } else {
-      let result = await reqAddCategory(categoryName);
-      const { status, data, msg } = result;
+      let result;
+      if (this.isUpdate) {
+        result = await reqUpdateCategory(this._id, categoryName);
+      } else {
+        result = await reqAddCategory(categoryName);
+      }
+
+      const { status, msg } = result;
       if (status === 0) {
-        message.success("添加分类成功！"); //添加成功
-        // this.props.saveCategory(); //需要发两次网咯请求
+        message.success(this.isUpdate ? "修改分类成功！" : "添加分类成功！");
+        this.props.saveCategory(); //需要发两次网咯请求
         //通知redux在他所保存的那个分类列表中加入一个data
-        this.props.saveNewCategory([...this.props.categoryList, data]); //减少一次网咯请求
+        // this.props.saveNewCategory([...this.props.categoryList, data]); //减少一次网咯请求
         //重置表单
         this.refs.categoryForm.resetFields();
         //弹窗隐藏
@@ -61,8 +86,9 @@ class Category extends Component {
 
   render() {
     // dataSource是一个数据源 要展示的数据 数组格式 一般从服务器请求回来
-    const dataSource = this.props.categoryList;
+    const dataSource = [...this.props.categoryList];
 
+    // columns是表格中列的配置 是table组件最核心的配置 拥有每一列的配置特性
     const columns = [
       {
         title: "分类管理", //列名
@@ -75,7 +101,16 @@ class Category extends Component {
         key: "name",
         align: "center",
         width: 155,
-        render: () => <Button type="link">修改分类</Button>,
+        render: (categoryObj) => (
+          <Button
+            onClick={() => {
+              this.showModal(categoryObj);
+            }}
+            type="link"
+          >
+            修改分类
+          </Button>
+        ),
       },
     ];
 
@@ -97,7 +132,7 @@ class Category extends Component {
           />
         </Card>
         <Modal
-          title="添加分类" //弹窗的标题
+          title={this.isUpdate ? "修改分类" : "添加分类"} //弹窗的标题
           visible={this.state.visible} //控制弹窗是否展示
           onOk={this.handleOk} //确认的回调
           onCancel={this.handleCancel} //确认的回调
@@ -109,7 +144,16 @@ class Category extends Component {
               name="categoryName" // 4.0必须写才有校验
               rules={[{ required: true, message: "分类名必填" }]}
             >
-              <Input placeholder="请输入分类名" autoComplete="off" />
+              {/* 
+								Input组件如果被Form表单包裹了，那么Input组件的defaultValue，只有在两个情况有用：
+									1.Form表单初始化的时候。
+									2.Form表单重置的时候。
+							*/}
+              <Input
+                defaultValue={this.name} //输入框默认内容
+                placeholder="请输入分类名" //占位
+                autoComplete="off" //输入不保存
+              />
             </Item>
           </Form>
         </Modal>
