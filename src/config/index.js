@@ -8,3 +8,5 @@ export const WEATHER_BASE_URL =
 
 export const AJAX_BASE_URL = "http://localhost:3000"; //Ajax请求的基本路径
 export const AJAX_TIMEOUT = "2000"; //Ajax请求的超时时间
+
+export const PAGE_SIZE = 4; //每一页展示多少条数据

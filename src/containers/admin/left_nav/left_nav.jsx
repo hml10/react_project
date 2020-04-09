@@ -14,7 +14,8 @@ class LeftNav extends Component {
   // 根据路径计算title
   getTitleByPath = () => {
     const { pathname } = this.props.location; //拿到路径
-    const currentKey = pathname.split("/").reverse()[0]; //拿到路径最后一个单词
+    let currentKey = pathname.split("/").reverse()[0]; //拿到路径最后一个单词
+    if (pathname.indexOf("product") !== -1) currentKey = "product"; //解决添加商品路由 丢失title文字问题
     let title = ""; // 定义一个空title
     menus.forEach((menusObj) => {
       if (menusObj.children instanceof Array) {
@@ -74,7 +75,9 @@ class LeftNav extends Component {
   render() {
     // console.log(this.props.location.pathname); //拿取非路由组件
     const currentPath = this.props.location.pathname.split("/"); //拿取非路由组件得到的数组
-    const selectedKey = currentPath.reverse()[0]; //刷新后还是默认选中菜单
+    let selectedKey = currentPath.reverse()[0]; //刷新后还是默认选中菜单
+
+    if (currentPath.indexOf("product") !== -1) selectedKey = "product"; //如果路由后面只要包含product就ok
     // console.log(selectedKey);
     return (
       <div>

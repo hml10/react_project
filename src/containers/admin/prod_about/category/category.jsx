@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Card, Button, Table, Modal, Form, Input, message } from "antd";
 import { connect } from "react-redux";
 import { reqAddCategory, reqUpdateCategory } from "../../../../ajax/index";
+import { PAGE_SIZE } from "../../../../config/index";
 import {
   createSaveCategoryAsyncAction,
   createSaveCategoryAction,
@@ -125,7 +126,7 @@ class Category extends Component {
         >
           <Table
             bordered //边框
-            pagination={{ pageSize: 4, showQuickJumper: true }} //分页器 //是否可以快速跳转至某页
+            pagination={{ pageSize: PAGE_SIZE, showQuickJumper: true }} //分页器 //是否可以快速跳转至某页
             dataSource={dataSource.reverse()} //数据源
             columns={columns} //列的配置
             rowKey="_id" //表格行key的取值 可以是字符串或一个函数

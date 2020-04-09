@@ -43,3 +43,13 @@ export const reqAddCategory = (categoryName) =>
 // 请求修改分类
 export const reqUpdateCategory = (categoryId, categoryName) =>
   ajax.post("/manage/category/update", { categoryId, categoryName });
+
+// 请求商品列表(分页数据)
+export const reqProductList = (pageNum, pageSize) =>
+  ajax.get("/manage/product/list", { params: { pageNum, pageSize } });
+
+// 请求搜索商品(分页数据)
+export const reqSearchProduct = (searchType, keyWord, pageNum, pageSize) =>
+  ajax.get("/manage/product/search", {
+    params: { [searchType]: keyWord, pageNum, pageSize },
+  });
