@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { Card, Select, Input, Button, Table, message } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { reqProductList, reqSearchProduct } from "../../../../ajax/index";
+import {
+  reqProductList,
+  reqSearchProduct,
+  reqChangProductStatus,
+} from "../../../../ajax/index";
 import { PAGE_SIZE } from "../../../../config";
 
 const { Option } = Select;
@@ -13,6 +17,7 @@ export default class Product extends Component {
     searchType: "productName", //搜索类型(按名称搜)
     keyWord: "", //搜索的关键字
     current: 1, //当前是第几页
+    isLoading: true, //是否处于加载中
   };
 
   // 请求商品列表 计算多少页 展示多少条
@@ -29,10 +34,32 @@ export default class Product extends Component {
     const { status, data, msg } = result;
     if (status === 0) {
       const { list, total, pageNum } = data;
-      this.setState({ productList: list, total, current: pageNum });
+      this.setState({
+        productList: list,
+        total,
+        current: pageNum,
+        isLoading: false,
+      });
     } else {
       message.error(msg);
     }
+  };
+
+  // 商品上架下架回调
+  changeProductStatus = async (currentProduct) => {
+    let { _id, status } = currentProduct;
+    if (status === 1) status = 2;
+    else status = 1;
+    // 发送请求更新状态
+    let result = await reqChangProductStatus(_id, status);
+    if (result.status === 0) {
+      message.success("操作成功");
+      this.getProductList(this.state.current); //用来刷新页面，但是要传参数进去判断当前是第几页
+    } else {
+      message.error("result.msg");
+    }
+
+    // console.log(currentProduct);
   };
 
   componentDidMount() {
@@ -63,16 +90,22 @@ export default class Product extends Component {
       },
       {
         title: "商品状态",
-        dataIndex: "status",
+        // dataIndex: "status",
         key: "status",
         align: "center",
-        render: (status) => (
+        render: (ProductObj) => (
           <div>
-            <Button size="small" type={status === 1 ? "danger" : "primary"}>
-              {status === 1 ? "下架" : "上架"}
+            <Button
+              onClick={() => {
+                this.changeProductStatus(ProductObj);
+              }}
+              size="small"
+              type={ProductObj.status === 1 ? "danger" : "primary"}
+            >
+              {ProductObj.status === 1 ? "下架" : "上架"}
             </Button>
             <br />
-            <span> {status === 1 ? "在售" : "售空"} </span>
+            <span> {ProductObj.status === 1 ? "在售" : "售空"} </span>
           </div>
         ),
       },
@@ -113,6 +146,7 @@ export default class Product extends Component {
     ];
     return (
       <Card
+        // loading={true}
         title={
           <div>
             <Select
@@ -157,6 +191,7 @@ export default class Product extends Component {
         }
       >
         <Table
+          loading={this.state.isLoading}
           dataSource={dataSource}
           columns={columns}
           bordered

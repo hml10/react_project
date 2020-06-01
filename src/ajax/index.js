@@ -53,3 +53,11 @@ export const reqSearchProduct = (searchType, keyWord, pageNum, pageSize) =>
   ajax.get("/manage/product/search", {
     params: { [searchType]: keyWord, pageNum, pageSize },
   });
+
+// 请求商品详情(通过id)
+export const reqProductDetailById = (productId) =>
+  ajax.get("/manage/product/info", { params: { productId } });
+
+// 请求商品上架下架
+export const reqChangProductStatus = (productId, status) =>
+  ajax.post("/manage/product/updateStatus", { productId, status });
