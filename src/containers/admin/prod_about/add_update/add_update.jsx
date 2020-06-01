@@ -3,6 +3,7 @@ import { Button, Card, Form, Input, Select } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { createSaveCategoryAsyncAction } from "../../../../redux/actions/category";
+import PictureWall from "./picture_wall";
 
 const { Item } = Form;
 const { Option } = Select;
@@ -35,7 +36,7 @@ class Add_update extends Component {
       >
         <Form onFinish={this.onFinish}>
           <Item
-            name="productName"
+            name="name"
             label="商品名称"
             wrapperCol={{ span: 10 }}
             rules={[{ required: true, message: "商品名称必填" }]}
@@ -44,7 +45,7 @@ class Add_update extends Component {
           </Item>
 
           <Item
-            name="productDesc"
+            name="desc"
             label="商品描述"
             wrapperCol={{ span: 10 }}
             rules={[{ required: true, message: "商品描述必填" }]}
@@ -53,7 +54,7 @@ class Add_update extends Component {
           </Item>
 
           <Item
-            name="productPrice"
+            name="price"
             label="商品价格"
             wrapperCol={{ span: 10 }}
             rules={[{ required: true, message: "商品价格必填" }]}
@@ -67,7 +68,7 @@ class Add_update extends Component {
           </Item>
 
           <Item
-            name="productCategory"
+            name="categoryId"
             label="商品分类"
             wrapperCol={{ span: 10 }}
             rules={[{ required: true, message: "必须选择一个分类" }]}
@@ -89,7 +90,7 @@ class Add_update extends Component {
             wrapperCol={{ span: 10 }}
             style={{ marginLeft: "12px" }}
           >
-            此处放置antd提供的图片上传组件
+            <PictureWall />
           </Item>
 
           <Item

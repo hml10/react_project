@@ -61,3 +61,7 @@ export const reqProductDetailById = (productId) =>
 // 请求商品上架下架
 export const reqChangProductStatus = (productId, status) =>
   ajax.post("/manage/product/updateStatus", { productId, status });
+
+// 请求删除图片
+export const reqDeletePicture = (name) =>
+  ajax.post("/manage/img/delete", { name });
