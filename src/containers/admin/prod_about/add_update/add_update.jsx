@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { Button, Card, Form, Input, Select } from "antd";
+import { Button, Card, Form, Input, Select, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { createSaveCategoryAsyncAction } from "../../../../redux/actions/category";
+import { reqAddProduct } from "../../../../ajax";
 import PictureWall from "./picture_wall";
+import RichText from "./rich_text";
 
 const { Item } = Form;
 const { Option } = Select;
@@ -17,8 +19,18 @@ class Add_update extends Component {
     }
   }
 
-  onFinish = (values) => {
-    console.log(values);
+  onFinish = async (values) => {
+    values.imgs = this.refs.pictureWall.getImgsNameArr(); //找照片墙组件获取图片数组
+    values.detail = this.refs.richText.getRichText(); //找富文本组件获取商品详情
+    // console.log(values);
+    let result = await reqAddProduct(values);
+    const { status, msg } = result;
+    if (status === 0) {
+      message.success("商品添加成功");
+      this.props.history.push("/admin/prod_about/product"); //添加成功后重新跳转页面
+    } else {
+      message.error(msg);
+    }
   };
 
   render() {
@@ -90,16 +102,16 @@ class Add_update extends Component {
             wrapperCol={{ span: 10 }}
             style={{ marginLeft: "12px" }}
           >
-            <PictureWall />
+            <PictureWall ref="pictureWall" />
           </Item>
 
           <Item
             // name="productDetail" //报错：如果在使用表单可以使用name，没有使用表单验证，请删除掉
             label="商品详情"
-            wrapperCol={{ span: 10 }}
+            wrapperCol={{ span: 16 }}
             style={{ marginLeft: "12px" }}
           >
-            此处放置富文本编辑器组件
+            <RichText ref="richText" />
           </Item>
 
           <Item style={{ marginLeft: "12px" }}>

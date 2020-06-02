@@ -31,6 +31,28 @@ export default class PicturesWall extends Component {
     ],
   };
 
+  //根据fileList生成一个由新的图片名所组成的数组
+  getImgsNameArr = () => {
+    let arr = [];
+    this.state.fileList.forEach((imgObj) => {
+      arr.push(imgObj.name);
+    });
+    return arr;
+  };
+
+  setFileList = (imgNameArr) => {
+    let arr = [];
+    imgNameArr.forEach((imgName, index) => {
+      arr.push({
+        uid: index,
+        name: imgName,
+        status: "done",
+        url: "/upload/" + imgName,
+      });
+    });
+    this.setState({ fileList: arr });
+  };
+
   // 关闭预览按钮的回调
   handleCancel = () => this.setState({ previewVisible: false });
 
