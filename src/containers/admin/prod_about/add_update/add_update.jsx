@@ -3,7 +3,11 @@ import { Button, Card, Form, Input, Select, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { createSaveCategoryAsyncAction } from "../../../../redux/actions/category";
-import { reqAddProduct } from "../../../../ajax";
+import {
+  reqAddProduct,
+  reqProductDetailById,
+  reqUpdateProduct,
+} from "../../../../ajax";
 import PictureWall from "./picture_wall";
 import RichText from "./rich_text";
 
@@ -11,22 +15,58 @@ const { Item } = Form;
 const { Option } = Select;
 
 class Add_update extends Component {
+  // 判断点击的是添加还是修改，商品的状态
+  state = {
+    isUpdate: false,
+  };
+
+  // 数据回显的回调
+  getProductInfoById = async (id) => {
+    let result = await reqProductDetailById(id);
+    // console.log(result);
+    const { status, data, msg } = result;
+    // console.log(data);
+
+    if (status === 0) {
+      this.refs.form.setFieldsValue(data); //回显表单基本数据
+      this.refs.pictureWall.setFileList(data.imgs); //回显照片墙组件的图片
+      this.refs.richText.setRichText(data.detail); // 回显富文本的信息
+    } else {
+      message.error(msg);
+    }
+  };
+
   // 组件挂载后
   componentDidMount() {
     const { categoryList, saveCategory } = this.props;
     if (categoryList.length === 0) {
       saveCategory();
     }
+    // 尝试获取传过来的id，若有id是修改商品，否则是新增商品
+    // console.log(this.props.match.params.id); //拿到点击修改商品的id
+    const { id } = this.props.match.params;
+    if (id) {
+      this.id = id;
+      this.setState({ isUpdate: true }); //往state里读取状态并修改
+      this.getProductInfoById(id);
+    }
   }
 
   onFinish = async (values) => {
     values.imgs = this.refs.pictureWall.getImgsNameArr(); //找照片墙组件获取图片数组
     values.detail = this.refs.richText.getRichText(); //找富文本组件获取商品详情
+    let result;
+    if (this.state.isUpdate) {
+      values._id = this.id;
+      result = await reqUpdateProduct(values);
+    } else {
+      result = await reqAddProduct(values);
+    }
     // console.log(values);
-    let result = await reqAddProduct(values);
+
     const { status, msg } = result;
     if (status === 0) {
-      message.success("商品添加成功");
+      message.success(this.state.isUpdate ? "商品修改成功" : "商品添加成功");
       this.props.history.push("/admin/prod_about/product"); //添加成功后重新跳转页面
     } else {
       message.error(msg);
@@ -42,11 +82,11 @@ class Add_update extends Component {
               <ArrowLeftOutlined />
               返回
             </Button>
-            <span>添加商品</span>
+            <span>{this.state.isUpdate ? "修改商品" : "添加商品"}</span>
           </div>
         }
       >
-        <Form onFinish={this.onFinish}>
+        <Form onFinish={this.onFinish} ref="form">
           <Item
             name="name"
             label="商品名称"

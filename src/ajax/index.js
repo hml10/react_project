@@ -66,6 +66,10 @@ export const reqChangProductStatus = (productId, status) =>
 export const reqDeletePicture = (name) =>
   ajax.post("/manage/img/delete", { name });
 
-// 请求添加商品
+// 请求添加商品--不包括_id
 export const reqAddProduct = (productObj) =>
   ajax.post("/manage/product/add", productObj);
+
+// 请求修改商品--拥有_id
+export const reqUpdateProduct = (productObj) =>
+  ajax.post("/manage/product/update", productObj);
