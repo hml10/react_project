@@ -131,7 +131,6 @@ export default class User extends Component {
             bordered
             rowKey="_id"
           />
-          ;
         </Card>
 
         {/*新增用户弹窗*/}

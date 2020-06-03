@@ -164,7 +164,6 @@ export default class Role extends Component {
             dataSource={dataSource.reverse()} //把后添加的反转到前面--数据多的情况下慎用
             columns={columns}
           />
-          ;
         </Card>
         {/* 新增角色的弹窗 */}
         <Modal
