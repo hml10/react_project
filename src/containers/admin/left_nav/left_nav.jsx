@@ -36,39 +36,56 @@ class LeftNav extends Component {
     if (!this.props.title) this.getTitleByPath(); // 根据路径读取title
   }
 
+  // 专门用于校验当前菜单是否有权限查看
+  hasAuth = (menuObj) => {
+    const { userMenus } = this.props; //用户能看到的菜单数组
+    if (this.props.username === "admin") return true; //如果是超级管理员admin都能看
+    // 判断菜单是否有孩子
+    if (!menuObj.children) {
+      return userMenus.find((item) => item === menuObj.key); //没有子菜单的情况下
+    } else {
+      return menuObj.children.some(
+        (childMenuObj) => userMenus.indexOf(childMenuObj.key) !== -1 //有子菜单的情况下
+      );
+    }
+  };
+
   // 根据菜单默认文件生成菜单
   createMenu = (menuArr) => {
     return menuArr.map((menuObj) => {
-      if (!menuObj.children) {
-        return (
-          <Item
-            onClick={() => {
-              // console.log(menuObj.title); //点击时遍历得到所点击的菜单
-              this.props.saveTitle(menuObj.title); //存入redux
-            }}
-            key={menuObj.key}
-          >
-            <Link to={menuObj.path}>
-              <menuObj.icon />
-              <span>{menuObj.title}</span>
-            </Link>
-          </Item>
-        );
-      } else {
-        return (
-          <SubMenu
-            key={menuObj.key}
-            title={
-              <span>
+      if (this.hasAuth(menuObj)) {
+        if (!menuObj.children) {
+          return (
+            <Item
+              onClick={() => {
+                // console.log(menuObj.title); //点击时遍历得到所点击的菜单
+                this.props.saveTitle(menuObj.title); //存入redux
+              }}
+              key={menuObj.key}
+            >
+              <Link to={menuObj.path}>
                 <menuObj.icon />
                 <span>{menuObj.title}</span>
-              </span>
-            }
-          >
-            {this.createMenu(menuObj.children)} {/* // 递归遍历 */}
-          </SubMenu>
-        );
+              </Link>
+            </Item>
+          );
+        } else {
+          return (
+            <SubMenu
+              key={menuObj.key}
+              title={
+                <span>
+                  <menuObj.icon />
+                  <span>{menuObj.title}</span>
+                </span>
+              }
+            >
+              {this.createMenu(menuObj.children)} {/* // 递归遍历 */}
+            </SubMenu>
+          );
+        }
       }
+      return menuObj.key; //箭头函数随便返回的一个值，解决警告问题
     });
   };
 
@@ -103,6 +120,10 @@ class LeftNav extends Component {
 
 // withRouter 是个函数 可以加工组件 能让非路由组件拥有路由组件的api
 export default connect(
-  (state) => ({ title: state.title }), //传递状态
+  (state) => ({
+    title: state.title,
+    userMenus: state.userInfo.user.role.menus,
+    username: state.userInfo.user.username,
+  }), //传递状态
   { saveTitle: createSaveTitleAction } //传递操作状态的方法
 )(withRouter(LeftNav));
