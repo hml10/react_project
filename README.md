@@ -4,7 +4,7 @@
 
 1. 进入 https://ant.design/docs/react/introduce-cn andt 网址 进入在 create-react-app 中使用（高级配置）
 
-2. 引入 react-app-rewired 并修改 package.json 里的启动配置，然后在项目根目录创建一个 config-overrides.js 用于修改默认配置
+2. 引入 react-app-rewired 并修改 package.json 启动配置，然后在项目根目录创建一个 config-overrides.js 用于修改默认配置
 
 3. 引入 babel-plugin-import 是一个用于按需加载组件代码和样式的 babel 插件（原理）
 
